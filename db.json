@@ -1,0 +1,35 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "HTML master guide",
+      "msg": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eaque a perferendis facere modi quae cum, officia dolore, velit neque recusandae illum porro fuga, dolor necessitatibus repellendus sit accusantium? Vitae saepe libero delectus sapiente officia nulla excepturi hic "
+    },
+    {
+      "id": "2",
+      "title": "CSS master guide",
+      "msg": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eaque a perferendis facere modi quae cum, officia dolore, velit neque recusandae illum porro fuga, dolor necessitatibus repellendus sit accusantium? Vitae saepe libero delectus sapiente officia nulla excepturi hic "
+    },
+    {
+      "id": "3",
+      "title": "JAVASCRIPT master guide",
+      "msg": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eaque a perferendis facere modi quae cum, officia dolore, velit neque recusandae illum porro fuga, dolor necessitatibus repellendus sit accusantium? Vitae saepe libero delectus sapiente officia nulla excepturi hic "
+    },
+    {
+      "id": "4",
+      "title": "react master guide",
+      "msg": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eaque a perferendis facere modi quae cum, officia dolore, velit neque recusandae illum porro fuga, dolor necessitatibus repellendus sit accusantium? Vitae saepe libero delectus sapiente officia nulla excepturi hic "
+    },
+    {
+      "id": "5",
+      "title": "node master guide",
+      "msg": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae eaque a perferendis facere modi quae cum, officia dolore, velit neque recusandae illum porro fuga, dolor necessitatibus repellendus sit accusantium? Vitae saepe libero delectus sapiente officia nulla excepturi hic "
+    },
+    {
+      "id": "cad3",
+      "name": "Mohd Sakib",
+      "email": "mohdsakib481@gmail.com",
+      "age": "78"
+    }
+  ]
+}
