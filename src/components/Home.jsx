@@ -4,50 +4,93 @@ const API_URL = "https://6749f9998680202966334a87.mockapi.io/hindi";
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(false); // Chat app visibility state
-  const [tapCount, setTapCount] = useState(0); // Screen tap count state
+  const [cardClicks, setCardClicks] = useState({}); // Clicks per card
+  const [keyboardOpen, setKeyboardOpen] = useState(false); // Detect keyboard state
 
-  // Tap handler to track user taps
-  const handleScreenTap = () => {
-    setTapCount((prevCount) => {
-      const newCount = prevCount + 1;
-      if (newCount === 3) {
-        setIsVisible(true); // Show chat app after 3 taps
+  useEffect(() => {
+    const adjustForKeyboard = () => {
+      if (window.innerHeight < window.outerHeight) {
+        setKeyboardOpen(true);
+      } else {
+        setKeyboardOpen(false);
       }
-      return newCount;
+    };
+
+    // Add event listener for keyboard detection
+    window.addEventListener("resize", adjustForKeyboard);
+
+    return () => {
+      window.removeEventListener("resize", adjustForKeyboard);
+    };
+  }, []);
+
+  const handleCardClick = (cardId) => {
+    setCardClicks((prevClicks) => {
+      const newClicks = {
+        ...prevClicks,
+        [cardId]: (prevClicks[cardId] || 0) + 1,
+      };
+      if (newClicks[cardId] === 3) {
+        setIsVisible(true); // Open chat app after 3 clicks on any card
+      }
+      return newClicks;
     });
   };
 
   if (!isVisible) {
-    // Blank screen with tap counter
+    const facts = [
+      "हिंदी विश्व की तीसरी सबसे ज्यादा बोले जाने वाली भाषा है।",
+      "हिंदी में पहला अखबार 'उदंत मार्तंड' 1826 में प्रकाशित हुआ।",
+    ];
+
     return (
       <div
         style={{
           width: "100vw",
           height: "100vh",
-          backgroundColor: "black",
           display: "flex",
-          alignItems: "center",
+          flexWrap: "wrap",
           justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#f5f5f5",
         }}
-        onClick={handleScreenTap}
       >
-        {/* Add optional tap count display */}
-        <span style={{ color: "white", fontSize: "20px" }}>
-          {/* Taps: {tapCount} */}
-        </span>
+        {facts.map((fact, index) => (
+          <div
+            key={index}
+            onClick={() => handleCardClick(index)}
+            style={{
+              width: "500px",
+              height: "100px",
+              margin: "10px",
+              backgroundColor: "#fff",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              padding: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              cursor: "pointer",
+            }}
+          >
+            {fact}
+          </div>
+        ))}
       </div>
     );
   }
 
-  return <ChatApp />;
+  return <ChatApp keyboardOpen={keyboardOpen} />;
 };
 
-const ChatApp = () => {
+const ChatApp = ({ keyboardOpen }) => {
   const [messages, setMessages] = useState([]); // Messages state
   const [newMessage, setNewMessage] = useState(""); // New message input
   const bottomRef = useRef(null); // Bottom scroll reference
+  const messageClicks = useRef({}); // Click count per message
 
-  // API se messages fetch karne ka function
   const fetchMessages = async () => {
     try {
       const response = await fetch(API_URL);
@@ -58,77 +101,97 @@ const ChatApp = () => {
     }
   };
 
-  // Component mount hone par aur har 30 seconds me data refresh karne ka setup
   useEffect(() => {
-    fetchMessages(); // Initial fetch
-    const interval = setInterval(fetchMessages, 2000); // 2 seconds ke baad refresh
-    return () => clearInterval(interval); // Cleanup on unmount
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 2000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Message send karne ka function (POST request)
+  useEffect(() => {
+    if (bottomRef.current) {
+      // Scroll to the bottom only when a new message is added
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const handleSendMessage = async () => {
-    if (newMessage.trim() === "") return; // Empty input check
+    if (newMessage.trim() === "") return;
+
+    const timestamp = new Date().toLocaleTimeString(); // Current time
+
     try {
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: newMessage }),
+        body: JSON.stringify({ message: newMessage, timestamp }), // Add timestamp
       });
+
       const data = await response.json();
-      setMessages([...messages, data]); // Local state update karein
-      setNewMessage(""); // Input clear karein
+      setMessages((prevMessages) => [...prevMessages, data]); // Append new message
+      setNewMessage(""); // Clear input field
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
-  // Enter key press par message send karna
+  const handleMessageClick = async (messageId) => {
+    messageClicks.current[messageId] =
+      (messageClicks.current[messageId] || 0) + 1;
+
+    if (messageClicks.current[messageId] === 5) {
+      try {
+        await fetch(`${API_URL}/${messageId}`, { method: "DELETE" });
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.id !== messageId)
+        );
+        delete messageClicks.current[messageId]; // Reset count after deletion
+      } catch (error) {
+        console.error("Error deleting message:", error);
+      }
+    }
+  };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSendMessage();
     }
   };
 
-  // Message delete karna (DELETE request)
-  const handleDeleteMessage = async (id) => {
-    try {
-      await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-      const updatedMessages = messages.filter((message) => message.id !== id);
-      setMessages(updatedMessages); // Local state update karein
-    } catch (error) {
-      console.error("Error deleting message:", error);
-    }
+  const handleRefresh = () => {
+    window.location.reload(); // Refresh the page
   };
 
-  // Scroll to bottom on messages update
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
-
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Application</h2>
+    <div
+      style={{
+        ...styles.container,
+        height: keyboardOpen ? "calc(100vh - 50px)" : "100vh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+      }}
+    >
+      <h2 style={styles.heading}>Send Any Fact</h2>
+      <button onClick={handleRefresh} style={styles.refreshButton}>
+        Back
+      </button>
       <div style={styles.chatBox}>
         {messages.map((message) => (
-          <div key={message.id} style={styles.message}>
-            {/* Message text */}
+          <div
+            key={message.id}
+            style={styles.message}
+            onClick={() => handleMessageClick(message.id)}
+          >
             <span style={styles.messageText}>{message.message}</span>
-            {/* Delete button */}
-            <button
-              style={styles.deleteButton}
-              onClick={() => handleDeleteMessage(message.id)}
-            >
-              Delete
-            </button>
+            <div style={styles.timestamp}>
+              {message.timestamp ? message.timestamp : "Just now"}
+            </div>
           </div>
         ))}
-        {/* Invisible div for scroll reference */}
         <div ref={bottomRef}></div>
       </div>
       <div style={styles.inputContainer}>
@@ -136,9 +199,10 @@ const ChatApp = () => {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={handleKeyPress} // Enter key press handler
+          onKeyPress={handleKeyPress}
           placeholder="Type your message..."
           style={styles.input}
+          autoFocus
         />
         <button onClick={handleSendMessage} style={styles.sendButton}>
           Send
@@ -148,11 +212,8 @@ const ChatApp = () => {
   );
 };
 
-// CSS-in-JS styles
 const styles = {
   container: {
-    width: "400px",
-    margin: "50px auto",
     fontFamily: "Arial, sans-serif",
     border: "1px solid #ccc",
     borderRadius: "8px",
@@ -163,8 +224,18 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
   },
+  refreshButton: {
+    display: "block",
+    margin: "10px auto",
+    backgroundColor: "#dc3545",
+    color: "#fff",
+    border: "none",
+    borderRadius: "4px",
+    padding: "10px 20px",
+    cursor: "pointer",
+  },
   chatBox: {
-    maxHeight: "300px",
+    maxHeight: "200px",
     overflowY: "auto",
     border: "1px solid #ddd",
     padding: "10px",
@@ -172,29 +243,21 @@ const styles = {
     marginBottom: "10px",
   },
   message: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
     background: "#f9f9f9",
     padding: "10px",
     borderRadius: "5px",
     marginBottom: "5px",
+    cursor: "pointer",
   },
   messageText: {
-    flex: 1,
-    minWidth: 0,
     wordWrap: "break-word",
-    overflowWrap: "break-word",
     whiteSpace: "pre-wrap",
-    marginRight: "10px",
   },
-  deleteButton: {
-    background: "#ff4d4d",
-    color: "#fff",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer",
+  timestamp: {
+    fontSize: "0.8em",
+    color: "#888",
+    marginTop: "5px",
+    marginLeft: "78%",
   },
   inputContainer: {
     display: "flex",
