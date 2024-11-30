@@ -295,7 +295,7 @@ const styles = {
     fontSize: "0.8em",
     color: "#888",
     marginTop: "5px",
-    marginLeft: "78%",
+    textAlign: "right",
   },
   inputContainer: {
     display: "flex",
