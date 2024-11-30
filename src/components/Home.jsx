@@ -1,40 +1,101 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const API_URL = "https://6749f9998680202966334a87.mockapi.io/hindi";
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(false); // Chat app visibility state
-  const [tapCount, setTapCount] = useState(0); // Screen tap count state
+  const [cardClicks, setCardClicks] = useState({}); // Clicks per card
 
-  // Tap handler to track user taps
-  const handleScreenTap = () => {
-    setTapCount((prevCount) => {
-      const newCount = prevCount + 1;
-      if (newCount === 3) {
-        setIsVisible(true); // Show chat app after 3 taps
+  const handleCardClick = (cardId) => {
+    setCardClicks((prevClicks) => {
+      const newClicks = { ...prevClicks, [cardId]: (prevClicks[cardId] || 0) + 1 };
+      if (newClicks[cardId] === 3) {
+        setIsVisible(true); // Open chat app after 3 clicks on any card
       }
-      return newCount;
+      return newClicks;
     });
   };
 
   if (!isVisible) {
-    // Blank screen with tap counter
+    const facts = [
+      "हिंदी विश्व की तीसरी सबसे ज्यादा बोले जाने वाली भाषा है।",
+      "हिंदी में पहला अखबार 'उदंत मार्तंड' 1826 में प्रकाशित हुआ।",
+      "भारत में 14 सितंबर को हिंदी दिवस मनाया जाता है।",
+      "हिंदी को 1950 में भारत की आधिकारिक भाषा बनाया गया।",
+      "हिंदी का नाम संस्कृत शब्द 'हिन्द' से लिया गया है।",
+      "हिंदी में पहला उपन्यास 'परीक्षा गुरु' 1882 में लिखा गया।",
+      "देवनागरी लिपि में लिखी जाती है हिंदी।",
+      "हिंदी का पहला शब्दकोश 1875 में तैयार किया गया।",
+      "हिंदी के लेखक मुंशी प्रेमचंद को 'उपन्यास सम्राट' कहा जाता है।",
+      "विश्व हिंदी दिवस हर साल 10 जनवरी को मनाया जाता है।",
+      "भारतीय संविधान 26 जनवरी 1950 को लागू किया गया।",  
+"स्वतंत्रता संग्राम के दौरान 1942 में 'भारत छोड़ो आंदोलन' शुरू किया गया।",  
+"अशोक महान ने अपने राज्य के दौरान बौद्ध धर्म को बढ़ावा दिया।",  
+"महात्मा गांधी ने 1915 में दक्षिण अफ्रीका से भारत लौटने के बाद स्वतंत्रता संग्राम का नेतृत्व किया।",  
+"1857 का विद्रोह भारत का पहला स्वतंत्रता संग्राम माना जाता है।",  
+"हड़प्पा सभ्यता को सिंधु घाटी सभ्यता भी कहा जाता है।",  
+"आल्हा-ऊदल महोबा के वीर योद्धा थे, जिनकी कहानियां आज भी प्रसिद्ध हैं।",  
+"ताजमहल का निर्माण 1632 में शुरू हुआ और 1653 में पूरा हुआ।",  
+"चाणक्य ने मौर्य साम्राज्य की स्थापना में चंद्रगुप्त मौर्य की मदद की।",  
+"स्वामी विवेकानंद ने 1893 में शिकागो में धर्म संसद को संबोधित किया।",  
+"आधुनिक कंप्यूटर के जनक चार्ल्स बैबेज माने जाते हैं।",  
+"भारत का पहला उपग्रह 'आर्यभट्ट' 1975 में लॉन्च किया गया।",  
+"ग्रेगोरी मेंडेल को 'आधुनिक आनुवंशिकी का जनक' कहा जाता है।",  
+"सर सी.वी. रमन को भौतिकी में उनके 'रमन प्रभाव' के लिए नोबेल पुरस्कार मिला।",  
+"न्यूटन ने 1687 में गुरुत्वाकर्षण का सिद्धांत प्रस्तुत किया।",  
+"पहला कृत्रिम उपग्रह 'स्पुतनिक-1' 1957 में सोवियत संघ ने लॉन्च किया।",  
+"डीएनए की संरचना की खोज वाटसन और क्रिक ने 1953 में की।",  
+"पृथ्वी के चारों ओर चक्कर लगाने वाला अंतरिक्ष यात्री पहला व्यक्ति यूरी गागरिन था।",  
+"एलेसेंड्रो वोल्टा ने बैटरी का आविष्कार किया।",  
+"भारत ने 2014 में मंगल ग्रह पर अपना पहला मिशन 'मंगलयान' सफलतापूर्वक लॉन्च किया।",  
+"भारत में सबसे बड़ा त्योहार दीपावली है।",  
+"योग की उत्पत्ति भारत में हुई और इसे पतंजलि ने व्यवस्थित किया।",  
+"अजंता और एलोरा की गुफाएं भारत की प्राचीन कलाओं का उदाहरण हैं।",  
+"संगीत के सात सुरों की उत्पत्ति भारत से मानी जाती है।",  
+"भरतनाट्यम भारत के सबसे पुराने शास्त्रीय नृत्य रूपों में से एक है।",  
+"भारत में 22 आधिकारिक भाषाएं हैं।",  
+"महाकाव्य 'रामायण' और 'महाभारत' भारतीय संस्कृति का आधार हैं।",  
+"कुंभ मेला हर 12 साल में आयोजित किया जाता है।",  
+"भारत के राष्ट्रीय पशु बाघ और राष्ट्रीय पक्षी मोर हैं।",  
+"हिंदू धर्म में गाय को पवित्र माना जाता है।",  
+
+    ];
+
     return (
       <div
         style={{
           width: "100vw",
           height: "100vh",
-          backgroundColor: "black",
           display: "flex",
-          alignItems: "center",
+          flexWrap: "wrap",
           justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#f5f5f5",
         }}
-        onClick={handleScreenTap}
       >
-        {/* Add optional tap count display */}
-        <span style={{ color: "white", fontSize: "20px" }}>
-          {/* Taps: {tapCount} */}
-        </span>
+        {facts.map((fact, index) => (
+          <div
+            key={index}
+            onClick={() => handleCardClick(index)}
+            style={{
+              width: "500px",
+              height: "100px",
+              margin: "10px",
+              backgroundColor: "#fff",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              padding: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              cursor: "pointer",
+            }}
+          >
+            {fact}
+          </div>
+        ))}
       </div>
     );
   }
@@ -46,8 +107,8 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]); // Messages state
   const [newMessage, setNewMessage] = useState(""); // New message input
   const bottomRef = useRef(null); // Bottom scroll reference
+  const messageClicks = useRef({}); // Click count per message
 
-  // API se messages fetch karne ka function
   const fetchMessages = async () => {
     try {
       const response = await fetch(API_URL);
@@ -58,16 +119,14 @@ const ChatApp = () => {
     }
   };
 
-  // Component mount hone par aur har 30 seconds me data refresh karne ka setup
   useEffect(() => {
-    fetchMessages(); // Initial fetch
-    const interval = setInterval(fetchMessages, 2000); // 2 seconds ke baad refresh
-    return () => clearInterval(interval); // Cleanup on unmount
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 2000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Message send karne ka function (POST request)
   const handleSendMessage = async () => {
-    if (newMessage.trim() === "") return; // Empty input check
+    if (newMessage.trim() === "") return;
     try {
       const response = await fetch(API_URL, {
         method: "POST",
@@ -77,34 +136,33 @@ const ChatApp = () => {
         body: JSON.stringify({ message: newMessage }),
       });
       const data = await response.json();
-      setMessages([...messages, data]); // Local state update karein
-      setNewMessage(""); // Input clear karein
+      setMessages([...messages, data]);
+      setNewMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
-  // Enter key press par message send karna
+  const handleMessageClick = async (messageId) => {
+    messageClicks.current[messageId] = (messageClicks.current[messageId] || 0) + 1;
+
+    if (messageClicks.current[messageId] === 5) {
+      try {
+        await fetch(`${API_URL}/${messageId}`, { method: "DELETE" });
+        setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== messageId));
+        delete messageClicks.current[messageId]; // Reset count after deletion
+      } catch (error) {
+        console.error("Error deleting message:", error);
+      }
+    }
+  };
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSendMessage();
     }
   };
 
-  // Message delete karna (DELETE request)
-  const handleDeleteMessage = async (id) => {
-    try {
-      await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-      const updatedMessages = messages.filter((message) => message.id !== id);
-      setMessages(updatedMessages); // Local state update karein
-    } catch (error) {
-      console.error("Error deleting message:", error);
-    }
-  };
-
-  // Scroll to bottom on messages update
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
@@ -113,22 +171,17 @@ const ChatApp = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>Application</h2>
+      <h2 style={styles.heading}>Send Any Fact</h2>
       <div style={styles.chatBox}>
         {messages.map((message) => (
-          <div key={message.id} style={styles.message}>
-            {/* Message text */}
+          <div
+            key={message.id}
+            style={styles.message}
+            onClick={() => handleMessageClick(message.id)} // Add click functionality
+          >
             <span style={styles.messageText}>{message.message}</span>
-            {/* Delete button */}
-            <button
-              style={styles.deleteButton}
-              onClick={() => handleDeleteMessage(message.id)}
-            >
-              Delete
-            </button>
           </div>
         ))}
-        {/* Invisible div for scroll reference */}
         <div ref={bottomRef}></div>
       </div>
       <div style={styles.inputContainer}>
@@ -136,7 +189,7 @@ const ChatApp = () => {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={handleKeyPress} // Enter key press handler
+          onKeyPress={handleKeyPress}
           placeholder="Type your message..."
           style={styles.input}
         />
@@ -148,7 +201,6 @@ const ChatApp = () => {
   );
 };
 
-// CSS-in-JS styles
 const styles = {
   container: {
     width: "400px",
@@ -172,29 +224,16 @@ const styles = {
     marginBottom: "10px",
   },
   message: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
     background: "#f9f9f9",
     padding: "10px",
     borderRadius: "5px",
     marginBottom: "5px",
+    cursor: "pointer",
   },
   messageText: {
     flex: 1,
-    minWidth: 0,
     wordWrap: "break-word",
-    overflowWrap: "break-word",
     whiteSpace: "pre-wrap",
-    marginRight: "10px",
-  },
-  deleteButton: {
-    background: "#ff4d4d",
-    color: "#fff",
-    border: "none",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    cursor: "pointer",
   },
   inputContainer: {
     display: "flex",
