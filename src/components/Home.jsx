@@ -170,7 +170,16 @@ const ChatApp = () => {
   }, [messages]);
 
   return (
-    <div style={styles.container}>
+    <div
+      style={{
+        ...styles.container,
+        position: "fixed", // Fixed position
+        top: "100px", // Adjust distance from the top
+        left: "50%", // Center horizontally
+        transform: "translateX(-50%)", // Center adjustment
+        zIndex: 1000, // Ensure it's on top
+      }}
+    >
       <h2 style={styles.heading}>Send Any Fact</h2>
       <div style={styles.chatBox}>
         {messages.map((message) => (
@@ -216,7 +225,7 @@ const styles = {
     marginBottom: "20px",
   },
   chatBox: {
-    maxHeight: "300px",
+    maxHeight: "200px",
     overflowY: "auto",
     border: "1px solid #ddd",
     padding: "10px",
