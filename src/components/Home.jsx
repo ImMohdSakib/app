@@ -90,6 +90,7 @@ const ChatApp = ({ keyboardOpen }) => {
   const [newMessage, setNewMessage] = useState(""); // New message input
   const bottomRef = useRef(null); // Bottom scroll reference
   const messageClicks = useRef({}); // Click count per message
+  const [screenshotAlert, setScreenshotAlert] = useState(false); // Screenshot alert state
 
   const fetchMessages = async () => {
     try {
@@ -113,6 +114,35 @@ const ChatApp = ({ keyboardOpen }) => {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  useEffect(() => {
+    const detectScreenshot = () => {
+      setScreenshotAlert(true);
+      setTimeout(() => setScreenshotAlert(false), 3000); // Hide alert after 3 seconds
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        const previousWidth = window.innerWidth;
+        const previousHeight = window.innerHeight;
+
+        setTimeout(() => {
+          if (
+            window.innerWidth !== previousWidth ||
+            window.innerHeight !== previousHeight
+          ) {
+            detectScreenshot();
+          }
+        }, 500);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
@@ -175,6 +205,11 @@ const ChatApp = ({ keyboardOpen }) => {
         zIndex: 1000,
       }}
     >
+      {screenshotAlert && (
+        <div style={styles.screenshotAlert}>
+          Screenshot detected!
+        </div>
+      )}
       <h2 style={styles.heading}>Send Any Fact</h2>
       <button onClick={handleRefresh} style={styles.refreshButton}>
         Back
@@ -250,33 +285,40 @@ const styles = {
     cursor: "pointer",
   },
   messageText: {
-    wordWrap: "break-word",
-    whiteSpace: "pre-wrap",
+    fontSize: "14px",
+    color: "#333",
   },
   timestamp: {
-    fontSize: "0.8em",
-    color: "#888",
+    fontSize: "12px",
+    color: "#666",
+    textAlign: "right",
     marginTop: "5px",
-    marginLeft: "78%",
   },
   inputContainer: {
     display: "flex",
     justifyContent: "space-between",
   },
   input: {
-    flex: "1",
-    padding: "10px",
+    flex: 1,
+    border: "1px solid #ddd",
     borderRadius: "4px",
-    border: "1px solid #ccc",
-    marginRight: "10px",
+    padding: "10px",
   },
   sendButton: {
-    background: "#007bff",
-    color: "white",
+    backgroundColor: "#28a745",
+    color: "#fff",
     border: "none",
     borderRadius: "4px",
-    padding: "10px",
+    padding: "10px 20px",
     cursor: "pointer",
+  },
+  screenshotAlert: {
+    backgroundColor: "#ffc107",
+    color: "#fff",
+    padding: "10px",
+    textAlign: "center",
+    borderRadius: "5px",
+    marginBottom: "10px",
   },
 };
 
