@@ -408,6 +408,7 @@ const styles = {
     color: "#888",
     marginTop: "5px",
     marginLeft: "78%",
+    textAlign: "right",
   },
   inputContainer: {
     display: "flex",
