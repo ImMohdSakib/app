@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { CiImageOn } from "react-icons/ci"; // Importing the image icon
+import { FiSend } from "react-icons/fi"; // Importing the send icon
+import img from "../assets/image1.png"
+
 
 const API_URL = "https://6749f9998680202966334a87.mockapi.io/hindi";
 
@@ -16,7 +20,6 @@ const App = () => {
       }
     };
 
-    // Add event listener for keyboard detection
     window.addEventListener("resize", adjustForKeyboard);
 
     return () => {
@@ -41,6 +44,44 @@ const App = () => {
     const facts = [
       "हिंदी विश्व की तीसरी सबसे ज्यादा बोले जाने वाली भाषा है।",
       "हिंदी में पहला अखबार 'उदंत मार्तंड' 1826 में प्रकाशित हुआ।",
+      "भारत में 14 सितंबर को हिंदी दिवस मनाया जाता है।",
+      "हिंदी को 1950 में भारत की आधिकारिक भाषा बनाया गया।",
+      "हिंदी का नाम संस्कृत शब्द 'हिन्द' से लिया गया है।",
+      "हिंदी में पहला उपन्यास 'परीक्षा गुरु' 1882 में लिखा गया।",
+      "देवनागरी लिपि में लिखी जाती है हिंदी।",
+      "हिंदी का पहला शब्दकोश 1875 में तैयार किया गया।",
+      "हिंदी के लेखक मुंशी प्रेमचंद को 'उपन्यास सम्राट' कहा जाता है।",
+      "विश्व हिंदी दिवस हर साल 10 जनवरी को मनाया जाता है।",
+      "भारतीय संविधान 26 जनवरी 1950 को लागू किया गया।",  
+"स्वतंत्रता संग्राम के दौरान 1942 में 'भारत छोड़ो आंदोलन' शुरू किया गया।",  
+"अशोक महान ने अपने राज्य के दौरान बौद्ध धर्म को बढ़ावा दिया।",  
+"महात्मा गांधी ने 1915 में दक्षिण अफ्रीका से भारत लौटने के बाद स्वतंत्रता संग्राम का नेतृत्व किया।",  
+"1857 का विद्रोह भारत का पहला स्वतंत्रता संग्राम माना जाता है।",  
+"हड़प्पा सभ्यता को सिंधु घाटी सभ्यता भी कहा जाता है।",  
+"आल्हा-ऊदल महोबा के वीर योद्धा थे, जिनकी कहानियां आज भी प्रसिद्ध हैं।",  
+"ताजमहल का निर्माण 1632 में शुरू हुआ और 1653 में पूरा हुआ।",  
+"चाणक्य ने मौर्य साम्राज्य की स्थापना में चंद्रगुप्त मौर्य की मदद की।",  
+"स्वामी विवेकानंद ने 1893 में शिकागो में धर्म संसद को संबोधित किया।",  
+"आधुनिक कंप्यूटर के जनक चार्ल्स बैबेज माने जाते हैं।",  
+"भारत का पहला उपग्रह 'आर्यभट्ट' 1975 में लॉन्च किया गया।",  
+"ग्रेगोरी मेंडेल को 'आधुनिक आनुवंशिकी का जनक' कहा जाता है।",  
+"सर सी.वी. रमन को भौतिकी में उनके 'रमन प्रभाव' के लिए नोबेल पुरस्कार मिला।",  
+"न्यूटन ने 1687 में गुरुत्वाकर्षण का सिद्धांत प्रस्तुत किया।",  
+"पहला कृत्रिम उपग्रह 'स्पुतनिक-1' 1957 में सोवियत संघ ने लॉन्च किया।",  
+"डीएनए की संरचना की खोज वाटसन और क्रिक ने 1953 में की।",  
+"पृथ्वी के चारों ओर चक्कर लगाने वाला अंतरिक्ष यात्री पहला व्यक्ति यूरी गागरिन था।",  
+"एलेसेंड्रो वोल्टा ने बैटरी का आविष्कार किया।",  
+"भारत ने 2014 में मंगल ग्रह पर अपना पहला मिशन 'मंगलयान' सफलतापूर्वक लॉन्च किया।",  
+"भारत में सबसे बड़ा त्योहार दीपावली है।",  
+"योग की उत्पत्ति भारत में हुई और इसे पतंजलि ने व्यवस्थित किया।",  
+"अजंता और एलोरा की गुफाएं भारत की प्राचीन कलाओं का उदाहरण हैं।",  
+"संगीत के सात सुरों की उत्पत्ति भारत से मानी जाती है।",  
+"भरतनाट्यम भारत के सबसे पुराने शास्त्रीय नृत्य रूपों में से एक है।",  
+"भारत में 22 आधिकारिक भाषाएं हैं।",  
+"महाकाव्य 'रामायण' और 'महाभारत' भारतीय संस्कृति का आधार हैं।",  
+"कुंभ मेला हर 12 साल में आयोजित किया जाता है।",  
+"भारत के राष्ट्रीय पशु बाघ और राष्ट्रीय पक्षी मोर हैं।",  
+"हिंदू धर्म में गाय को पवित्र माना जाता है।",  
     ];
 
     return (
@@ -88,9 +129,11 @@ const App = () => {
 const ChatApp = ({ keyboardOpen }) => {
   const [messages, setMessages] = useState([]); // Messages state
   const [newMessage, setNewMessage] = useState(""); // New message input
+  const [image, setImage] = useState(null); // Image state
+  const [isUploadingImage, setIsUploadingImage] = useState(false); // Image upload state
+  const [enlargedImage, setEnlargedImage] = useState(null); // Enlarged image state
   const bottomRef = useRef(null); // Bottom scroll reference
   const messageClicks = useRef({}); // Click count per message
-  const [screenshotAlert, setScreenshotAlert] = useState(false); // Screenshot alert state
 
   const fetchMessages = async () => {
     try {
@@ -110,44 +153,53 @@ const ChatApp = ({ keyboardOpen }) => {
 
   useEffect(() => {
     if (bottomRef.current) {
-      // Scroll to the bottom only when a new message is added
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
-  useEffect(() => {
-    const detectScreenshot = () => {
-      setScreenshotAlert(true);
-      setTimeout(() => setScreenshotAlert(false), 3000); // Hide alert after 3 seconds
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        const previousWidth = window.innerWidth;
-        const previousHeight = window.innerHeight;
-
-        setTimeout(() => {
-          if (
-            window.innerWidth !== previousWidth ||
-            window.innerHeight !== previousHeight
-          ) {
-            detectScreenshot();
-          }
-        }, 500);
+  const uploadImage = async (file) => {
+    setIsUploadingImage(true); // Set image uploading state to true
+    const formData = new FormData();
+    formData.append("image", file); // ImgBB requires "image" key instead of "file"
+  
+    try {
+      const response = await fetch(
+        "https://api.imgbb.com/1/upload?key=23e041dd9d19ab458f05bdef91500150",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to upload image");
       }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+  
+      const data = await response.json();
+      setIsUploadingImage(false); // Set image uploading state to false once done
+      return data.data.url; // Ensure correct URL is returned
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setIsUploadingImage(false); // Set image uploading state to false on error
+      return null;
+    }
+  };
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() === "") return;
+    if (newMessage.trim() === "" && !image) return;
 
-    const timestamp = new Date().toLocaleTimeString(); // Current time
+    let imageUrl = null;
+    if (image) {
+      imageUrl = await uploadImage(image);
+    }
+
+    const timestamp = new Date().toLocaleTimeString();
+
+    const messageData = {
+      message: newMessage,
+      timestamp,
+      image: imageUrl,
+    };
 
     try {
       const response = await fetch(API_URL, {
@@ -155,12 +207,13 @@ const ChatApp = ({ keyboardOpen }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: newMessage, timestamp }), // Add timestamp
+        body: JSON.stringify(messageData),
       });
 
       const data = await response.json();
-      setMessages((prevMessages) => [...prevMessages, data]); // Append new message
-      setNewMessage(""); // Clear input field
+      setMessages((prevMessages) => [...prevMessages, data]);
+      setNewMessage(""); // Reset message input
+      setImage(null); // Reset image state
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -176,7 +229,7 @@ const ChatApp = ({ keyboardOpen }) => {
         setMessages((prevMessages) =>
           prevMessages.filter((msg) => msg.id !== messageId)
         );
-        delete messageClicks.current[messageId]; // Reset count after deletion
+        delete messageClicks.current[messageId];
       } catch (error) {
         console.error("Error deleting message:", error);
       }
@@ -190,7 +243,23 @@ const ChatApp = ({ keyboardOpen }) => {
   };
 
   const handleRefresh = () => {
-    window.location.reload(); // Refresh the page
+    window.location.reload();
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    if (file) {
+      setNewMessage(file.name); // Update input with image file name
+    }
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setEnlargedImage(imageUrl); // Set the image as enlarged
+  };
+
+  const handleCloseImage = () => {
+    setEnlargedImage(null); // Close the enlarged image
   };
 
   return (
@@ -205,11 +274,6 @@ const ChatApp = ({ keyboardOpen }) => {
         zIndex: 1000,
       }}
     >
-      {screenshotAlert && (
-        <div style={styles.screenshotAlert}>
-          Screenshot detected!
-        </div>
-      )}
       <h2 style={styles.heading}>Send Any Fact</h2>
       <button onClick={handleRefresh} style={styles.refreshButton}>
         Back
@@ -222,6 +286,14 @@ const ChatApp = ({ keyboardOpen }) => {
             onClick={() => handleMessageClick(message.id)}
           >
             <span style={styles.messageText}>{message.message}</span>
+            {message.image && (
+              <img
+                src={message.image}
+                alt="Uploaded"
+                style={{ maxWidth: "100%", marginTop: "10px", cursor: "pointer" }}
+                onClick={() => handleImageClick(message.image)} // Trigger image enlargement
+              />
+            )}
             <div style={styles.timestamp}>
               {message.timestamp ? message.timestamp : "Just now"}
             </div>
@@ -230,6 +302,15 @@ const ChatApp = ({ keyboardOpen }) => {
         <div ref={bottomRef}></div>
       </div>
       <div style={styles.inputContainer}>
+        {/* Image icon before input */}
+        <button
+          onClick={() => document.getElementById("fileInput").click()}
+          style={styles.logoButton}
+        >
+          {/* <CiImageOn /> */}
+          <img style={styles.logoButton} src={img} alt="" />
+        </button>
+        {/* Input box */}
         <input
           type="text"
           value={newMessage}
@@ -239,86 +320,153 @@ const ChatApp = ({ keyboardOpen }) => {
           style={styles.input}
           autoFocus
         />
+        {/* Send icon button after input */}
         <button onClick={handleSendMessage} style={styles.sendButton}>
-          Send
+          <FiSend />
         </button>
       </div>
+      {/* Hidden file input for image upload */}
+      <input
+        id="fileInput"
+        type="file"
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleImageChange}
+      />
+     {isUploadingImage && (
+  <div style={styles.modal}>
+    <div style={styles.modalContent}>
+      <p>Image Sending...</p>
+    </div>
+  </div>
+)}
+
+
+      {/* Enlarged image modal */}
+      {enlargedImage && (
+        <div style={styles.modal} onClick={handleCloseImage}>
+          <img
+            src={enlargedImage}
+            alt="Enlarged"
+            style={styles.enlargedImage}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 const styles = {
   container: {
-    fontFamily: "Arial, sans-serif",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+    padding: "0 20px",
+    backgroundColor: "#fff",
+    // borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    width: "100%",
+    position: "absolute",
+    bottom: "40px",
+    // right: "20px",
+    zIndex: 1000,
   },
   heading: {
-    textAlign: "center",
-    marginBottom: "20px",
+    fontSize: "18px",
+    marginBottom: "10px",
+    fontWeight: "bold",
   },
   refreshButton: {
-    display: "block",
-    margin: "10px auto",
-    backgroundColor: "#dc3545",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    padding: "10px 20px",
+    backgroundColor: "",
+    border: "1px solid #ddd",
+    padding: "5px",
     cursor: "pointer",
+    height: "40px",
+    width: "60px",
+    marginBottom: "10px",
+    borderRadius:"5px"
   },
   chatBox: {
-    maxHeight: "200px",
     overflowY: "auto",
-    border: "1px solid #ddd",
-    padding: "10px",
-    borderRadius: "8px",
+    maxHeight: "240px",
     marginBottom: "10px",
+    border:"1px solid rgb(228, 228, 228)",
+    padding: "0 10px",
+    backgroundColor: "rgb(245, 245, 245)",
+    borderRadius: "10px",
   },
   message: {
-    background: "#f9f9f9",
+    backgroundColor: "#e0e0e0",
+    borderRadius: "8px",
     padding: "10px",
-    borderRadius: "5px",
-    marginBottom: "5px",
-    cursor: "pointer",
+    marginBottom: "10px",
+    
   },
   messageText: {
-    fontSize: "14px",
-    color: "#333",
+    display: "block",
   },
   timestamp: {
     fontSize: "12px",
-    color: "#666",
-    textAlign: "right",
-    marginTop: "5px",
+    color: "#888",
+    marginTop: "10px",
+    textAlign:"right",
   },
   inputContainer: {
     display: "flex",
-    justifyContent: "space-between",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  logoButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "none",
+    // border: "1px solid",
+    cursor: "pointer",
+    fontSize : "24px",
+    height:"40px",
+    width:"40px",
+    objectFit: "cover",
+    marginRight:"3px",
   },
   input: {
     flex: 1,
-    border: "1px solid #ddd",
-    borderRadius: "4px",
     padding: "10px",
+    borderRadius: "20px",
+    border: "1px solid #ddd",
+    marginRight: "10px",
+    fontSize: "16px",
+    width: "100%",
   },
   sendButton: {
-    backgroundColor: "#28a745",
-    color: "#fff",
+    backgroundColor: "#0b87f1",
     border: "none",
-    borderRadius: "4px",
-    padding: "10px 20px",
+    color: "white",
+    padding: "10px",
+    borderRadius: "50%",
     cursor: "pointer",
   },
-  screenshotAlert: {
-    backgroundColor: "#ffc107",
-    color: "#fff",
-    padding: "10px",
-    textAlign: "center",
-    borderRadius: "5px",
-    marginBottom: "10px",
+  modal: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent background
+    zIndex: 1000, // To make sure the modal appears on top
+  },
+  modalContent: {
+    padding: "20px",
+    backgroundColor: "#fff",
+    borderRadius: "10px",
+    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
+  },
+  enlargedImage: {
+    maxWidth: "90%",
+    maxHeight: "90%",
+    objectFit: "contain",
   },
 };
 
