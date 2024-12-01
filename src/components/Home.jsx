@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { CiImageOn } from "react-icons/ci"; // Importing the image icon
-import { FiSend } from "react-icons/fi"; // Importing the send icon
+import { FiSend } from "react-icons/fi"; 
 import img from "../assets/image1.png"
 
 
@@ -42,7 +41,7 @@ const App = () => {
 
   if (!isVisible) {
     const facts = [
-      "हिंदी विश्व की तीसरी सबसे ज्यादा बोले जाने वाली भाषा है।",
+     "हिंदी विश्व की तीसरी सबसे ज्यादा बोले जाने वाली भाषा है।",
       "हिंदी में पहला अखबार 'उदंत मार्तंड' 1826 में प्रकाशित हुआ।",
       "भारत में 14 सितंबर को हिंदी दिवस मनाया जाता है।",
       "हिंदी को 1950 में भारत की आधिकारिक भाषा बनाया गया।",
@@ -407,8 +406,8 @@ const styles = {
   timestamp: {
     fontSize: "12px",
     color: "#888",
-    marginTop: "10px",
-    textAlign:"right",
+    marginTop: "5px",
+    marginLeft: "78%",
   },
   inputContainer: {
     display: "flex",
@@ -427,6 +426,7 @@ const styles = {
     width:"40px",
     objectFit: "cover",
     marginRight:"3px",
+    border:"none"
   },
   input: {
     flex: 1,
