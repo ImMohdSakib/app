@@ -311,18 +311,25 @@ const ChatApp = ({ keyboardOpen }) => {
         </button>
         {/* Input box */}
         <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Type your message..."
-          style={styles.input}
-          autoFocus
-        />
-        {/* Send icon button after input */}
-        <button onClick={handleSendMessage} style={styles.sendButton}>
-          <FiSend />
-        </button>
+  type="text"
+  value={newMessage}
+  onChange={(e) => setNewMessage(e.target.value)}
+  onKeyPress={handleKeyPress}
+  placeholder="Type your message..."
+  style={styles.input}
+  autoFocus
+/>
+{/* Send icon button after input */}
+<button
+  onClick={handleSendMessage}
+  style={{
+    ...styles.sendButton,
+    backgroundColor: newMessage ? "#28a745" : "#0b87f1", // Change color based on message input
+  }}
+>
+  <FiSend />
+</button>
+
       </div>
       {/* Hidden file input for image upload */}
       <input
